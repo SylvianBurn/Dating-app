@@ -17,13 +17,7 @@ export class NavComponent implements OnInit {
   constructor(
     public accountService: AccountService,
     private router: Router,
-    private toastr: ToastrService,
-  ) {
-    // var token = localStorage.getItem('token');
-
-    // if (token)
-    //   this.loggedIn = true;
-  }
+  ) {}
 
   ngOnInit(): void {
   }
@@ -38,7 +32,6 @@ export class NavComponent implements OnInit {
 
   logout() {
     this.accountService.logout();
-    // localStorage.removeItem("token");
     this.router.navigateByUrl('/');
   }
 }
