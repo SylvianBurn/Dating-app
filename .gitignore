@@ -477,4 +477,4 @@ $RECYCLE.BIN/
 *.lnk
 
 StudentAssets/*
-./API/appsettings.json
+API/appsettings.json
