@@ -1,17 +1,25 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { TabsModule } from 'ngx-bootstrap/tabs';
 import { Member } from 'src/app/_models/member';
 import { MembersService } from 'src/app/_services/members.service';
+import { GalleryModule, GalleryItem , ImageItem} from 'ng-gallery';
 
 @Component({
   selector: 'app-member-detail',
   templateUrl: './member-detail.component.html',
-  styleUrls: ['./member-detail.component.css']
+  styleUrls: ['./member-detail.component.css'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    TabsModule,
+    GalleryModule
+  ]
 })
 export class MemberDetailComponent implements OnInit {
   member: Member | undefined;
-  // galleryOptions: NgxGalleryOptions[] = [];
-  // galleryImages: NgxGalleryImage[] = [];
+  images: GalleryItem[] = [];
 
   constructor(
     private memberService: MembersService,
@@ -20,34 +28,17 @@ export class MemberDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadMember();
-
-    // this.galleryOptions = [
-    //   {
-    //     width: '500px',
-    //     height: '500px',
-    //     imagePercent: 100,
-    //     thumbnailsColumns: 4,
-    //     imageAnimation: NgxGalleryAnimation.Slide,
-    //     preview: false
-    //   }
-    // ];
-
-    // this.galleryImages = this.getImages();
   }
 
   getImages() {
-    if (!this.member) return [];
-
-    const imageUrls = [];
+    if (!this.member) return;
 
     for (const photo of this.member.photos) {
-      imageUrls.push({
-        small: photo.url,
-        medium: photo.url,
-        big: photo.url,
-      });
+      this.images.push(new ImageItem({
+        src: photo.url,
+        thumb: photo.url
+      }));
     }
-    return imageUrls;
   }
 
   loadMember() {
@@ -57,7 +48,7 @@ export class MemberDetailComponent implements OnInit {
     this.memberService.getMember(username).subscribe({
       next: m => {
         this.member = m;
-        // this.galleryImages = this.getImages();
+        this.getImages();
       }
     })
   }
